@@ -1,15 +1,207 @@
+<!-- admin/index.html -->
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Content Manager</title>
 
-  <title>Content Manager</title>
-  <!-- Include the stylesheets from your site here -->
+    <!-- Include the styles for the Netlify CMS UI, after your own styles -->
+    <link rel="stylesheet" href="https://unpkg.com/netlify-cms@^1.0.0/dist/cms.css" />
 
-  <script src="https://identity-js.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-  <script src="/cms.js"></script>
+    <!-- Include the script that builds the page and powers Netlify CMS -->
+    <script src="https://unpkg.com/netlify-cms@^1.0.0/dist/cms.js"></script>
+    <script>
+//initialisation variable
+
+var completeDrawing = document.createElement("completeDrawingLayer");
+var isPainting = false;
+    var layerNo = 0;
+
+var canvasList = [];
+
+    var shapeCanvasList = [];
+    var textCanvasList = [];
+    
+    var userStrokeStyle = '#FFC0CB';
+    var line = [];
+    var prevPos = { offsetX: 0, offsetY: 0 };
+
+function hello()
+{
+alert('hello');
+}
+
+ 
+var flag = false;
+    var    prevX = 0;
+      var  currX = 0;
+       var prevY = 0;
+        var currY = 0;
+        var dot_flag = false;
+
+    var x = "black";
+      var  y = 2;
+    
+    function init() {
+        var canvas = document.getElementById('completeDrawingLayer');
+       var ctx = canvas.getContext("2d");
+       var  w = canvas.width;
+        var h = canvas.height;
+    
+        canvas.addEventListener("mousemove", function (e) {
+            findxy('move', e)
+        }, false);
+        canvas.addEventListener("mousedown", function (e) {
+            findxy('down', e)
+        }, false);
+        canvas.addEventListener("mouseup", function (e) {
+            findxy('up', e)
+        }, false);
+        canvas.addEventListener("mouseout", function (e) {
+            findxy('out', e)
+        }, false);
+    }
+    
+    function color(obj) {
+        switch (obj.id) {
+            case "green":
+                x = "green";
+                break;
+            case "blue":
+                x = "blue";
+                break;
+            case "red":
+                x = "red";
+                break;
+            case "yellow":
+                x = "yellow";
+                break;
+            case "orange":
+                x = "orange";
+                break;
+            case "black":
+                x = "black";
+                break;
+            case "white":
+                x = "white";
+                break;
+        }
+        if (x == "white") y = 14;
+        else y = 2;
+    
+    }
+    
+    function draw() {
+var canvas = document.getElementById('completeDrawingLayer');
+       var ctx = canvas.getContext("2d");
+        ctx.beginPath();
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(currX, currY);
+        ctx.strokeStyle = x;
+        ctx.lineWidth = y;
+        ctx.stroke();
+        ctx.closePath();
+    }
+    
+    function erase() {
+        var m = confirm("Want to clear");
+        if (m) {
+            ctx.clearRect(0, 0, w, h);
+            document.getElementById('completeDrawingLayer').style.display = "none";
+        }
+    }
+    
+    function save() {
+        document.getElementById('completeDrawingLayer').style.border = "2px solid";
+        var dataURL = canvas.toDataURL();
+        document.getElementById('completeDrawingLayer').src = dataURL;
+        document.getElementById('completeDrawingLayer').style.display = "inline";
+    }
+    
+    function findxy(res, e) {
+        if (res == 'down') {
+            prevX = currX;
+            prevY = currY;
+            currX = e.clientX - canvas.offsetLeft;
+            currY = e.clientY - canvas.offsetTop;
+    
+            flag = true;
+            dot_flag = true;
+            if (dot_flag) {
+                ctx.beginPath();
+                ctx.fillStyle = x;
+                ctx.fillRect(currX, currY, 2, 2);
+                ctx.closePath();
+                dot_flag = false;
+            }
+        }
+        if (res == 'up' || res == "out") {
+            flag = false;
+        }
+        if (res == 'move') {
+            if (flag) {
+                prevX = currX;
+                prevY = currY;
+                currX = e.clientX - canvas.offsetLeft;
+                currY = e.clientY - canvas.offsetTop;
+                draw();
+            }
+        }
+    }
+
+var CanvasControl = createClass({
+
+  render: function() {
+    return h('div', {},
+ 	 h('script',{src: 'hfiuhiuhiuhiu'}, 'Export'),
+      h('button',{onClick : ()=> save()}, 'Export'),
+      h('button',{onClick : ()=> clear()}, 'Clear all'),
+      h('br'),
+      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB'},height:'100',width:'200'},'canv'),
+      h('br'),
+      h('canvas',{id: 'singleStrokeLayer', style :{'background': '#C0C0C0'}, height:'40',width:'200'},'canv'),
+h('button',{onClick: ()=> init()},'Start Drawing'));
+
+//dans la division on met 2 buttons, un canvas ...
+  }
+});
+CMS.registerWidget('canvasWidget', CanvasControl);
+//to Block ne pas mettr  le stream HTML, on met ce q'on veut persister
+//ecrire le contenu du fichier JSON
+//to Preview done le JSON  a canvas goJS uqi se debrouille pour faire le rendering 
+//dans quelle methode est le code du browsing? 
+
+CMS.registerEditorComponent({
+  // Internal id of the component
+  id: "canvas",
+  // Visible label
+  label: "Canvas",
+  // Fields the user need to fill out when adding an instance of the component
+  fields: [{name: 'id', label: 'Canvas ID', widget: 'canvasWidget'}],
+  // Pattern to identify a block as being an instance of this component
+  pattern: /^{{< youtube (\S+) >}}$/,
+  // Function to extract data elements from the regexp match
+  fromBlock: function(match) {
+    return {
+      id: match[1]
+    };
+  },
+  // Function to create a text block from an instance of this component
+  toBlock: function(obj) {
+    return `{{< Canvas ${obj.id} >}}`;
+  },
+  // Preview output for this component. Can either be a string or a React component
+  // (component gives better render performance)
+  toPreview: function(obj) {
+    return (
+      `<img src="https://img.youtube.com/vi/${obj.id}/maxresdefault.jpg" alt="Youtube Video"/>`
+    );
+  }
+});
+
+    </script>
 </body>
 </html>
