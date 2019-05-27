@@ -79,6 +79,37 @@ alert('je suis en train de dessiner');
 
 }
 
+function exportt()
+{
+//export complete drawing
+        var completeDrawing = document.getElementById("completeDrawingLayer")
+        var image = completeDrawing.toDataURL("image/png").replace("image/png", "image/octet-stream");
+
+        //new element a which is a link (href) to the image : permits download
+        var link = document.createElement('a');
+        link.download = "image.png";
+        link.href = image;
+        link.click();
+}
+function erase() 
+    {
+        //clear the complete drawing canvas
+        var canvas = document.getElementById('completeDrawingLayer');
+ var   ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        clickX = [];
+	clickY = [];
+	clickDrag = [];
+
+        //clear the single stroke canvas
+        
+        
+        this.layerNo = 0;
+        this.canvasList = [];
+        this.shapeCanvasList = [];
+        this.textCanvasList = [];
+    }
+
 function mouseDown(e) {
 //alert('je suis en mouseDown');
 var canvas = document.getElementById('completeDrawingLayer');
@@ -128,8 +159,8 @@ var CanvasControl = createClass({
   render: function() {
     return h('div', {},
  	 h('script',{src: 'hfiuhiuhiuhiu'}, 'Export'),
-      h('button',{onClick : ()=> init()}, 'Export'),
-      h('button',{onClick : ()=> clear()}, 'Clear all'),
+      h('button',{onClick : ()=> exportt()}, 'Export'),
+      h('button',{onClick : ()=> erase()}, 'Clear all'),
       h('br'),
       h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB'},height:'500',width:'500', onClick : ()=>init()},'canv'),
       h('br'),
