@@ -18,22 +18,22 @@
 
 var completeDrawing = document.createElement("completeDrawingLayer");
 var isPainting = false;
-    var layerNo = 0;
+var layerNo = 0;
 
 var canvasList = [];
 
-    var shapeCanvasList = [];
-    var textCanvasList = [];
+var shapeCanvasList = [];
+var textCanvasList = [];
     
-    var userStrokeStyle = '#FFC0CB';
-    var line = [];
-    var prevPos = { offsetX: 0, offsetY: 0 };
-
- var   rect = {};
-   var paint = false;
+var userStrokeStyle = '#FFC0CB';
+var line = [];
+var prevPos = { offsetX: 0, offsetY: 0 };
+var longueur=0;
+var rect = {};
+var paint = false;
 var clickX = new Array();
-        var clickY = new Array();
-        var clickDrag = new Array();
+var clickY = new Array();
+var clickDrag = new Array();
 
 
 function hello()
@@ -49,19 +49,23 @@ function addClick(x, y, dragging)
         }
 
 function redraw(){
-var canvas = document.getElementById('completeDrawingLayer');
- var   ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clears the canvas
+	var canvas = document.getElementById('completeDrawingLayer');
+	var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clears the canvas
              
-            ctx.strokeStyle = "#333";
-            ctx.lineJoin = "round";
-            ctx.lineWidth = 8;
+        ctx.strokeStyle = "#333";
+        ctx.lineJoin = "round";
+        ctx.lineWidth = 8;
              
-            for(var i=0; i < clickX.length; i++) {       
-                ctx.beginPath();
-                if(clickDrag[i] && i){
+        for(var i=0; i < clickX.length; i++) 
+	{       
+        	ctx.beginPath();
+                if(clickDrag[i] && i)
+		{
                     ctx.moveTo(clickX[i-1], clickY[i-1]);
-                }else{
+                }
+		else
+		{
                     ctx.moveTo(clickX[i]-1, clickY[i]);
                 }
                 ctx.lineTo(clickX[i], clickY[i]);
@@ -72,11 +76,9 @@ var canvas = document.getElementById('completeDrawingLayer');
 
 function draw() {
 
-var canvas = document.getElementById('completeDrawingLayer');
- var   ctx = canvas.getContext('2d');
-alert('je suis en train de dessiner');
-  
-
+	var canvas = document.getElementById('completeDrawingLayer');
+	var ctx = canvas.getContext('2d');
+	alert('je suis en train de dessiner');
 }
 
 function exportt()
@@ -91,12 +93,20 @@ function exportt()
         link.href = image;
         link.click();
 }
+
 function erase() 
     {
         //clear the complete drawing canvas
         var canvas = document.getElementById('completeDrawingLayer');
- var   ctx = canvas.getContext('2d');
+	var ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	for(var i = 1; i <= longueur; i++)
+        {
+            var node = document.getElementById('thumbnail');
+            document.getElementById('historique').removeChild(node);
+        }
+	
         clickX = [];
 	clickY = [];
 	clickDrag = [];
@@ -110,86 +120,66 @@ function erase()
         this.textCanvasList = [];
     }
 
-function mouseDown(e) {
-//alert('je suis en mouseDown');
-var canvas = document.getElementById('completeDrawingLayer');
- var   ctx = canvas.getContext('2d');	
-  var mouseX = e.pageX - canvas.offsetLeft;
-            var mouseY = e.pageY - canvas.offsetTop;
-             
-            paint = true;
-            addClick(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop);
-            redraw();
-
+function mouseDown(e) 
+{
+	//alert('je suis en mouseDown');
+	var canvas = document.getElementById('completeDrawingLayer');
+	var ctx = canvas.getContext('2d');	
+	var mouseX = e.pageX - canvas.offsetLeft;
+        var mouseY = e.pageY - canvas.offsetTop;
+        
+	paint = true;
+        addClick(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop);
+        redraw();
 }
 
 function newSingleStroke()
 {
-//increase number of layer
-        this.layerNo = this.layerNo + 1;
+	var completeDrawing = document.getElementById("completeDrawingLayer")
+        var image = completeDrawing.toDataURL("image/png").replace("image/png", "image/octet-stream");
 
-        //draw on complete drawing canvas
-        var destinationCanvas = document.getElementById("completeDrawingLayer")
-        var destCtx = destinationCanvas.getContext('2d');
-        destCtx.drawImage(this.canvas, 0, 0);
-
-        //new image of single stroke
-        var canvasStroke = this.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
         var img = document.createElement('img');
-        img.src = canvasStroke;
+	img.setAttribute('id', 'thumbnail');
+        img.src = image;
         img.style.width="300px";
         img.style.height="150px";
-        var infoDiv = document.createElement('div');
-        infoDiv.setAttribute('id', 'infodiv');
-        
-        //new div containing image and infos, buttons...
-        var divThumbnail = document.createElement('div');
-        divThumbnail.setAttribute('id', 'thumbnail'+this.layerNo);
-        divThumbnail.setAttribute('class', 'divThumbnail');
-        divThumbnail.appendChild(img);
-        divThumbnail.appendChild(infoDiv);
 
-        document.getElementById('historique').appendChild(divThumbnail);
-        
-        //create new canvas on canvasList
-        var tempcanvas = document.createElement('canvas');
-        tempcanvas.setAttribute('id', "canvas"+this.layerNo);
-        tempcanvas.setAttribute('width', this.canvas.width);
-        tempcanvas.setAttribute('height', this.canvas.height);
-        
-        this.canvasList.push(tempcanvas);
+        var div = document.getElementById('historique');
+        div.appendChild(img);
+	longueur = longueur + 1;
 }
 
-function mouseUp() {
-//alert('je suis en MouseUp');
-  paint = false;
-	newSingleStroke();
+function mouseUp() 
+{
+	//alert('je suis en MouseUp');
+	if (paint)
+	{
+		paint = false;
+		newSingleStroke();
+	}
 }
 
-function mouseLeave() {
-//alert('je suis en MouseLeave');
-  paint = false;
-  newSingleStroke();
-}
 
-function mouseMove(e) {
-//alert('je suis en mouseMove');
-var canvas = document.getElementById('completeDrawingLayer');
- var   ctx = canvas.getContext('2d');
-//alert(paint);
-  if(paint){
+
+function mouseMove(e) 
+{
+	//alert('je suis en mouseMove');
+	var canvas = document.getElementById('completeDrawingLayer');
+	var   ctx = canvas.getContext('2d');
+	//alert(paint);
+	if(paint)
+	{
                 addClick(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop, true);
                 redraw();
-            }
+        }
 }
 
 function init() {
-  var canvas = document.getElementById('completeDrawingLayer');
-  var   ctx = canvas.getContext('2d');
-  canvas.addEventListener('mousedown', mouseDown, false);
-  canvas.addEventListener('mouseup', mouseUp, false);
-  canvas.addEventListener('mousemove', mouseMove, false); 
-  canvas.addEventListener('mouseleave', mouseLeave, false);
+	var canvas = document.getElementById('completeDrawingLayer');
+	var ctx = canvas.getContext('2d');
+	canvas.addEventListener('mousedown', mouseDown, false);
+	canvas.addEventListener('mouseup', mouseUp, false);
+	canvas.addEventListener('mousemove', mouseMove, false); 
 }
 
 
@@ -197,15 +187,13 @@ var CanvasControl = createClass({
 
   render: function() {
     return h('div', {},
- 	 h('script',{src: 'hfiuhiuhiuhiu'}, 'Export'),
+      h('img', {src : 'class.png'}),
       h('button',{onClick : ()=> exportt()}, 'Export'),
       h('button',{onClick : ()=> erase()}, 'Clear all'),
       h('br'),
-      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB'},height:'500',width:'500', onClick : ()=>init()},'canv'),
+      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB', 'zIndex':'0', 'left':'0', 'top':'0'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
       h('br'),
-      h('canvas',{id: 'singleStrokeLayer', style :{'background': 'transparent'}, height:'40',width:'200'},'canv'),
-h('button',{onClick: ()=> init()},'Start Drawing'),
-h('br'),
+      h('canvas',{id: 'singleStrokeLayer', style :{'background': 'pink', 'zIndex':'1', 'left':'0', 'top':'0'}},'canv'),
 h('div',{id : 'historique', class : 'container'}));
 
 //dans la division on met 2 buttons, un canvas ...
