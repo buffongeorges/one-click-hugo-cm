@@ -30,8 +30,10 @@ var canvasList = [];
     var prevPos = { offsetX: 0, offsetY: 0 };
 
  var   rect = {};
-   var drag = false;
-
+   var paint = false;
+var clickX = new Array();
+        var clickY = new Array();
+        var clickDrag = new Array();
 
 
 function hello()
@@ -39,37 +41,85 @@ function hello()
 alert('hello');
 }
 
-function draw() {
+function addClick(x, y, dragging)
+        {
+            clickX.push(x);
+            clickY.push(y);
+            clickDrag.push(dragging);
+        }
+
+function redraw(){
 var canvas = document.getElementById('completeDrawingLayer');
  var   ctx = canvas.getContext('2d');
-  ctx.fillRect(rect.startX, rect.startY, rect.w, rect.h);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clears the canvas
+             
+            ctx.strokeStyle = "#333";
+            ctx.lineJoin = "round";
+            ctx.lineWidth = 8;
+             
+            for(var i=0; i < clickX.length; i++) {       
+                ctx.beginPath();
+                if(clickDrag[i] && i){
+                    ctx.moveTo(clickX[i-1], clickY[i-1]);
+                }else{
+                    ctx.moveTo(clickX[i]-1, clickY[i]);
+                }
+                ctx.lineTo(clickX[i], clickY[i]);
+                ctx.closePath();
+                ctx.stroke();
+            }
+        }
+
+function draw() {
+
+var canvas = document.getElementById('completeDrawingLayer');
+ var   ctx = canvas.getContext('2d');
+alert('je suis en train de dessiner');
+  
+
 }
 
 function mouseDown(e) {
-  rect.startX = e.pageX - this.offsetLeft;
-  rect.startY = e.pageY - this.offsetTop;
-  drag = true;
+//alert('je suis en mouseDown');
+var canvas = document.getElementById('completeDrawingLayer');
+ var   ctx = canvas.getContext('2d');	
+  var mouseX = e.pageX - canvas.offsetLeft;
+            var mouseY = e.pageY - canvas.offsetTop;
+             
+            paint = true;
+            addClick(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop);
+            redraw();
+
 }
 
 function mouseUp() {
-  drag = false;
+//alert('je suis en MouseUp');
+  paint = false;
+}
+
+function mouseLeave() {
+//alert('je suis en MouseLeave');
+  paint = false;
 }
 
 function mouseMove(e) {
+//alert('je suis en mouseMove');
 var canvas = document.getElementById('completeDrawingLayer');
  var   ctx = canvas.getContext('2d');
-  if (drag) {
-    rect.w = (e.pageX - this.offsetLeft) - rect.startX;
-    rect.h = (e.pageY - this.offsetTop) - rect.startY ;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    draw();
-  }
+//alert(paint);
+  if(paint){
+                addClick(e.pageX - canvas.offsetLeft, e.pageY - canvas.offsetTop, true);
+                redraw();
+            }
 }
 
 function init() {
+  var canvas = document.getElementById('completeDrawingLayer');
+  var   ctx = canvas.getContext('2d');
   canvas.addEventListener('mousedown', mouseDown, false);
   canvas.addEventListener('mouseup', mouseUp, false);
-  canvas.addEventListener('mousemove', mouseMove, false);
+  canvas.addEventListener('mousemove', mouseMove, false); 
+  canvas.addEventListener('mouseleave', mouseLeave, false);
 }
 
 
@@ -78,9 +128,10 @@ var CanvasControl = createClass({
   render: function() {
     return h('div', {},
  	 h('script',{src: 'hfiuhiuhiuhiu'}, 'Export'),
+      h('button',{onClick : ()=> init()}, 'Export'),
       h('button',{onClick : ()=> clear()}, 'Clear all'),
       h('br'),
-      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB'},height:'100',width:'200'},'canv'),
+      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB'},height:'500',width:'500', onClick : ()=>init()},'canv'),
       h('br'),
       h('canvas',{id: 'singleStrokeLayer', style :{'background': '#C0C0C0'}, height:'40',width:'200'},'canv'),
 h('button',{onClick: ()=> init()},'Start Drawing'));
