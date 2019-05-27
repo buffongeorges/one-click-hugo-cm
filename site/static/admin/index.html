@@ -135,7 +135,16 @@ function mouseDown(e)
 
 function newSingleStroke()
 {
-	var completeDrawing = document.getElementById("completeDrawingLayer")
+	this.layerNo = this.layerNo + 1;
+
+	//draw on complete drawing canvas
+	var canvas = document.getElementById("singleStrokeLayer");
+
+        var completeDrawing = document.getElementById("completeDrawingLayer");
+        var destCtx = completeDrawing.getContext('2d');
+        destCtx.drawImage(canvas, 0, 0);
+
+	//var completeDrawing = document.getElementById("completeDrawingLayer")
         var image = completeDrawing.toDataURL("image/png").replace("image/png", "image/octet-stream");
 
         var img = document.createElement('img');
@@ -145,8 +154,16 @@ function newSingleStroke()
         img.style.height="150px";
 
         var div = document.getElementById('historique');
-        div.appendChild(img);
+        //div.appendChild(img);
 	longueur = longueur + 1;
+	
+	var divThumbnail = document.createElement('div');
+        divThumbnail.setAttribute('id', 'thumbnail'+layerNo);
+        divThumbnail.setAttribute('class', 'divThumbnail');
+        divThumbnail.appendChild(img);
+        //divThumbnail.appendChild(infoDiv);
+
+        div.appendChild(divThumbnail);
 }
 
 function mouseUp() 
@@ -186,15 +203,16 @@ function init() {
 var CanvasControl = createClass({
 
   render: function() {
-    return h('div', {},
+    return h('div', {height:'1000',width:'1000'},
       h('img', {src : 'class.png'}),
       h('button',{onClick : ()=> exportt()}, 'Export'),
       h('button',{onClick : ()=> erase()}, 'Clear all'),
       h('br'),
-      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB', 'zIndex':'0', 'left':'0', 'top':'0'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
+      h('div', {height:'500',width:'500'},
+      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB', 'zIndex':'0', 'left':'0px', 'top':'0px','border':'1px solid #000000','position':'absolute'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
       h('br'),
-      h('canvas',{id: 'singleStrokeLayer', style :{'background': 'pink', 'zIndex':'1', 'left':'0', 'top':'0'}},'canv'),
-h('div',{id : 'historique', class : 'container'}));
+      h('canvas',{id: 'singleStrokeLayer', style :{'background': 'transparent', 'zIndex':'1', 'left':'0px', 'top':'0px', 'border':'1px solid #000000','position':'absolute'},  height:'500',width:'500'},'canv')),
+      h('div',{id : 'historique', class : 'container'}));
 
 //dans la division on met 2 buttons, un canvas ...
   }
