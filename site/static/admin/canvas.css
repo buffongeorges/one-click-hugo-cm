@@ -1,9 +1,10 @@
 canvas 
 {
     margin-left: 1%;
-    position : absolute ; 
+     
     border: 3px solid #000000;
     border-radius: 20px;
+    background : #DAE4E4;
 }
 
 img
@@ -12,99 +13,4 @@ img
     display: block;
 }
 
-.container
-{
-    position: relative;
-    top: 540px;
-    margin-left: 1%;
-    margin-right: 1%;
-    width: 98%;
-    border: 3px solid #000;
-    height: 205px;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    white-space: nowrap;
-    
-}
 
-.divThumbnail
-{
-    display:inline-block;
-    width: auto;
-    text-align: center;
-    border: 1px solid #000;
-}
-
-#myDiagramDiv 
-{
-	height: 60%;
-	background-color: #DAE4E4;
-	padding: 15px;
-	border-radius: 20px 20px 0 0;
-}
-
-#analyseDiv 
-{
-    position : absolute ;
-    display : inline-block ;
-    margin-right: 1%;
-    left: 1060px;
-	width: 43%;
-	height: 500px;
-	border: 3px solid #000000;
-	border-radius: 20px;
-}
-
-#bannerModel img 
-{
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
-	border: 1px solid #000000;
-}
-
-#bannerModel 
-{
-	margin-top: 20px;
-}
-
-#buttonsdiv
-{
-    margin-left: 1%;
-    margin-top: 25px;
-    width:1000px;
-    margin-bottom: 10px;
-}
-
-.inner
-{
-    display: inline-block;
-}
-
-.actions
-{
-    display: inline-block;
-    width:50%;
-}
-
-.modes
-{
-    display: inline-block;
-    width:50%;
-    text-align: right;
-}
-
-.button
-{
-    font-size: 16px;
-    display: inline-block;
-    background-color: transparent;
-    padding: 8px 30px;
-}
-
-.iconMode
-{
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-}
