@@ -103,7 +103,7 @@ function erase()
 	var ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	for(var i = 1; i <= longueur; i++)
+	for(var i = 1; i <= canvasList.length; i++)
         {
             var node = document.getElementById('thumbnail'+i);
             document.getElementById('historique').removeChild(node);
@@ -157,7 +157,7 @@ function newSingleStroke()
 
         var div = document.getElementById('historique');
         //div.appendChild(img);
-	longueur = longueur + 1;
+	//longueur = longueur + 1;
 	
 
 	 var infoDiv = document.createElement('div');
@@ -173,7 +173,7 @@ function newSingleStroke()
         {
             drawingMod.src = 'text.png';
         }
-        
+
         infoDiv.appendChild(drawingMod);
 
 	var divThumbnail = document.createElement('div');
