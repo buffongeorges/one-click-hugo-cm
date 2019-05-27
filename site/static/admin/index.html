@@ -103,7 +103,7 @@ function erase()
 
 	for(var i = 1; i <= longueur; i++)
         {
-            var node = document.getElementById('thumbnail');
+            var node = document.getElementById('thumbnail'+i);
             document.getElementById('historique').removeChild(node);
         }
 	
@@ -203,15 +203,14 @@ function init() {
 var CanvasControl = createClass({
 
   render: function() {
-    return h('div', {height:'1000',width:'1000'},
+    return h('div', {},
       h('img', {src : 'class.png'}),
       h('button',{onClick : ()=> exportt()}, 'Export'),
       h('button',{onClick : ()=> erase()}, 'Clear all'),
       h('br'),
-      h('div', {height:'500',width:'500'},
-      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB', 'zIndex':'0', 'left':'0px', 'top':'0px','border':'1px solid #000000','position':'absolute'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
-      h('br'),
-      h('canvas',{id: 'singleStrokeLayer', style :{'background': 'transparent', 'zIndex':'1', 'left':'0px', 'top':'0px', 'border':'1px solid #000000','position':'absolute'},  height:'500',width:'500'},'canv')),
+      h('div', {style:{'position':'relative'}},
+      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB', 'zIndex':'0', 'left':'0px', 'top':'0px','border':'1px solid #000000'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
+      h('canvas',{id: 'singleStrokeLayer', style :{'background': 'transparent', 'zIndex':'1', 'left':'0px', 'top':'0px', 'border':'1px solid #000000'},  height:'500',width:'500'},'canv')),
       h('div',{id : 'historique', class : 'container'}));
 
 //dans la division on met 2 buttons, un canvas ...
