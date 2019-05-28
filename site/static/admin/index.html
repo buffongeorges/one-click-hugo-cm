@@ -255,6 +255,72 @@ function init() {
 	canvas.addEventListener('mousemove', mouseMove, false); 
 }
 
+function postPictureEngineV2()
+    {
+        var xhr = new XMLHttpRequest();
+        var url = "localhost:8888/postPictureEngineV2";
+        xhr.onreadystatechange = function() 
+        {
+            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) // 200 quand on sera en NETWORK
+            {		
+                var engineDiv = document.getElementById("engineDiv");
+                var paraph = document.createElement("p");
+                var response = xhr.responseText.split("%split%");
+                paraph.innerHTML=response[0];
+                var shouldILoop=0;
+                var diagramDiv = document.getElementById("myDiagramDiv");
+
+                if(go.Diagram.fromDiv(diagramDiv)!=null)
+                {
+                    go.Diagram.fromDiv(diagramDiv).div = null;
+                }
+
+                ReactJson.initClass(response[1]);		// the loadFromJSON is made in initClass
+                    //loadFromJSONClass(response[1]);
+            }
+                //engineDiv.appendChild(paraph);
+                engineDiv.insertBefore(paraph,engineDiv.firstChild);
+		}
+	
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        
+        /*var canvasList = this.layerTab;
+        var shapeCanvasList = new Array();
+        var textCanvasList = new Array();
+        for(var i=0;i<canvasList.length;i++)
+        {
+            if(canvasList[i].getAttribute("layerType")=="shape")
+            {
+                shapeCanvasList.push(canvasList[i]);
+            }
+            if(canvasList[i].getAttribute("layerType")=="text")
+            {
+                textCanvasList.push(canvasList[i]);
+            }
+        }
+        
+        var request = "engineModel=class";
+        request += "&shapeLayersSize="+shapeCanvasList.length;
+        request += "&textLayersSize="+textCanvasList.length;
+        var sizeShapeCanvasList = shapeCanvasList.length;
+        for(var i=0;i<sizeShapeCanvasList;i++)
+        {
+            var uri = saveCanvas(shapeCanvasList[i]);
+            var bbox = getBoundingBox(shapeCanvasList[i]);
+            request+="&uri"+i+"="+uri+"&x"+i+"="+bbox[0]+"&y"+i+"="+bbox[1]+"&w"+i+"="+bbox[2]+"&h"+i+"="+bbox[3];
+        }
+        
+        for(var i=0;i<textCanvasList.length;i++)
+        {
+            var uri = saveCanvas(textCanvasList[i]);
+            var bbox = getBoundingBox(textCanvasList[i]);
+            request+="&uri"+(i+sizeShapeCanvasList)+"="+uri+"&x"+(i+sizeShapeCanvasList)+"="+bbox[0]+"&y"+(i+sizeShapeCanvasList)+"="+bbox[1]+"&w"+(i+sizeShapeCanvasList)+"="+bbox[2]+"&h"+(i+sizeShapeCanvasList)+"="+bbox[3];
+        }*/
+    
+        //xhr.send(request);
+    }
 
 var CanvasControl = createClass({
 
