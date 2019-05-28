@@ -79,8 +79,8 @@ function redraw(){
 function exportt()
 {
 //export complete drawing
-        var singleStroke = document.getElementById("singleStrokeLayer")
-        var image = singleStroke.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        var completeDrawing = document.getElementById("completeDrawingLayer")
+        var image = completeDrawing.toDataURL("image/png").replace("image/png", "image/octet-stream");
 
         //new element a which is a link (href) to the image : permits download
         var link = document.createElement('a');
