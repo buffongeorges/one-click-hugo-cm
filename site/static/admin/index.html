@@ -51,7 +51,7 @@ function addClick(x, y, dragging)
         }
 
 function redraw(){
-	var canvas = document.getElementById('completeDrawingLayer');
+	var canvas = document.getElementById('singleStrokeLayer');
 	var ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height); // Clears the canvas
              
@@ -76,18 +76,11 @@ function redraw(){
             }
         }
 
-function draw() {
-
-	var canvas = document.getElementById('completeDrawingLayer');
-	var ctx = canvas.getContext('2d');
-	alert('je suis en train de dessiner');
-}
-
 function exportt()
 {
 //export complete drawing
-        var completeDrawing = document.getElementById("completeDrawingLayer")
-        var image = completeDrawing.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        var singleStroke = document.getElementById("singleStrokeLayer")
+        var image = singleStroke.toDataURL("image/png").replace("image/png", "image/octet-stream");
 
         //new element a which is a link (href) to the image : permits download
         var link = document.createElement('a');
@@ -124,8 +117,9 @@ function erase()
 
 function mouseDown(e) 
 {
+	
 	//alert('je suis en mouseDown');
-	var canvas = document.getElementById('completeDrawingLayer');
+	var canvas = document.getElementById('singleStrokeLayer');
 	var ctx = canvas.getContext('2d');	
 	var mouseX = e.pageX - canvas.offsetLeft;
         var mouseY = e.pageY - canvas.offsetTop;
@@ -139,15 +133,15 @@ function newSingleStroke()
 {
 	this.layerNo = this.layerNo + 1;
 
-	//draw on complete drawing canvas
-	var canvas = document.getElementById("singleStrokeLayer");
+        var singleStroke = document.getElementById("singleStrokeLayer");
+        var singleCtx = singleStroke.getContext('2d');
 
-        var completeDrawing = document.getElementById("completeDrawingLayer");
-        var destCtx = completeDrawing.getContext('2d');
-        destCtx.drawImage(canvas, 0, 0);
-
-	//var completeDrawing = document.getElementById("completeDrawingLayer")
-        var image = completeDrawing.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        //draw on complete drawing canvas
+	var canvas = document.getElementById("completeDrawingLayer");
+	var destCtx = canvas.getContext('2d');
+	destCtx.drawImage(singleStroke, 0, 0);
+	
+        var image = singleStroke.toDataURL("image/png").replace("image/png", "image/octet-stream");
 
         var img = document.createElement('img');
 	img.setAttribute('id', 'thumbnail');
@@ -156,11 +150,8 @@ function newSingleStroke()
         img.style.height="150px";
 
         var div = document.getElementById('historique');
-        //div.appendChild(img);
-	//longueur = longueur + 1;
-	
 
-	 var infoDiv = document.createElement('div');
+	var infoDiv = document.createElement('div');
         infoDiv.setAttribute('id', 'infodiv');
         
         var drawingMod = document.createElement('img');
@@ -230,6 +221,14 @@ function mouseUp()
 	{
 		paint = false;
 		newSingleStroke();
+		
+		//clear the single stroke canvas
+		var singleStroke = document.getElementById("singleStrokeLayer");
+        	var singleCtx = singleStroke.getContext('2d');
+        	singleCtx.clearRect(0, 0, singleStroke.width, singleStroke.height);
+		clickX = [];
+		clickY = [];
+		clickDrag = [];
 	}
 }
 
@@ -238,7 +237,7 @@ function mouseUp()
 function mouseMove(e) 
 {
 	//alert('je suis en mouseMove');
-	var canvas = document.getElementById('completeDrawingLayer');
+	var canvas = document.getElementById('singleStrokeLayer');
 	var   ctx = canvas.getContext('2d');
 	//alert(paint);
 	if(paint)
@@ -249,7 +248,7 @@ function mouseMove(e)
 }
 
 function init() {
-	var canvas = document.getElementById('completeDrawingLayer');
+	var canvas = document.getElementById('singleStrokeLayer');
 	var ctx = canvas.getContext('2d');
 	canvas.addEventListener('mousedown', mouseDown, false);
 	canvas.addEventListener('mouseup', mouseUp, false);
@@ -278,8 +277,8 @@ var CanvasControl = createClass({
 
       h('br'),
       h('div', {id :'mainDiv', style:{'position':'relative'}},
-      h('canvas',{id: 'completeDrawingLayer', style :{'background': '#E4F4FB', 'zIndex':'0', 'left':'0px', 'top':'0px','border':'1px solid #000000'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
-      h('canvas',{id: 'singleStrokeLayer', style :{'background': 'transparent', 'zIndex':'1', 'left':'0px', 'top':'0px', 'border':'1px solid #000000'},  height:'500',width:'500'},'canv'),
+      h('canvas',{id: 'singleStrokeLayer', style :{'background': '#E4F4FB', 'left':'0px', 'top':'0px','border':'1px solid #000000'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
+      h('canvas',{id: 'completeDrawingLayer', style :{'background': 'transparent', 'left':'0px', 'top':'0px', 'border':'1px solid #000000'},  height:'500',width:'500'},'canv'),
       h('div', {id: 'analyseDiv'},
 	h('div',{id:'myDiagramDiv'}),
 	h('div',{id:'engineDiv'})),
