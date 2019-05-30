@@ -123,7 +123,7 @@ function mouseDown(e)
         var mouseY = e.pageY - canvas.offsetTop;
         
 	paint = true;
-        addClick(e.pageX - canvas.offsetLeft-150, e.pageY - canvas.offsetTop-170);
+        addClick(e.pageX - canvas.offsetLeft-170, e.pageY - canvas.offsetTop-150);
         redraw();
 }
 
@@ -133,7 +133,7 @@ function mouseMove(e)
 	var   ctx = canvas.getContext('2d');
 	if(paint)
 	{
-                addClick(e.pageX - canvas.offsetLeft-150, e.pageY - canvas.offsetTop-170, true);
+                addClick(e.pageX - canvas.offsetLeft-170, e.pageY - canvas.offsetTop-150, true);
                 redraw();
         }
 }
