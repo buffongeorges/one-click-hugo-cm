@@ -276,7 +276,7 @@ function postPictureEngineV2()
         {
             if(xhr.readyState == XMLHttpRequest.DONE) // 200 quand on sera en NETWORK
             {		
-                /*var engineDiv = document.getElementById("engineDiv");
+                var engineDiv = document.getElementById("engineDiv");
                 var paraph = document.createElement("p");
                 var response = xhr.responseText.split("%split%");
                 paraph.innerHTML=response[0];
@@ -292,7 +292,7 @@ function postPictureEngineV2()
                     //loadFromJSONClass(response[1]);
             }
                 //engineDiv.appendChild(paraph);
-                engineDiv.insertBefore(paraph,engineDiv.firstChild);*/
+                engineDiv.insertBefore(paraph,engineDiv.firstChild);
 		    
 	    }
 		}
