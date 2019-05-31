@@ -370,8 +370,8 @@ var CanvasControl = createClass({
 
       h('br'),
       h('div', {id :'mainDiv', style:{'position':'relative'}},
-      h('canvas',{id: 'singleStrokeLayer', style :{'background': '#E4F4FB', 'left':'0px', 'top':'0px','border':'1px solid #000000'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
-      h('canvas',{id: 'completeDrawingLayer', style :{'background': 'transparent', 'left':'0px', 'top':'0px', 'border':'1px solid #000000'},  height:'500',width:'500'},'canv'),
+      h('canvas',{id: 'singleStrokeLayer', style :{'position':'absolute','background': '#E4F4FB', 'left':'0px', 'top':'0px','border':'1px solid #000000'}, height:'500',width:'500', onClick : ()=>init()},'canv'),
+      h('canvas',{id: 'completeDrawingLayer', style :{'position':'absolute','background': 'transparent', 'left':'0px', 'top':'0px', 'border':'1px solid #000000'},  height:'500',width:'500'},'canv'),
       h('div', {id: 'analyseDiv'},
 	h('div',{id:'myDiagramDiv'}),
 	h('div',{id:'engineDiv'})),
