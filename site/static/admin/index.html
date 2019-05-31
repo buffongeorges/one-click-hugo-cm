@@ -117,23 +117,25 @@ function erase()
 
 function mouseDown(e) 
 {
+	e.preventDefault();
 	var canvas = document.getElementById('singleStrokeLayer');
 	var ctx = canvas.getContext('2d');	
-	var mouseX = e.pageX - canvas.offsetLeft;
-        var mouseY = e.pageY - canvas.offsetTop;
+	var mouseX = e.offsetX;
+        var mouseY = e.offsetY;
         
 	paint = true;
-        addClick(e.pageX - canvas.offsetLeft-100, e.pageY - canvas.offsetTop-120);
+        addClick(e.offsetX, e.offsetY);
         redraw();
 }
 
 function mouseMove(e) 
 {
+	e.preventDefault();
 	var canvas = document.getElementById('singleStrokeLayer');
 	var   ctx = canvas.getContext('2d');
 	if(paint)
 	{
-                addClick(e.pageX - canvas.offsetLeft-100, e.pageY - canvas.offsetTop-120, true);
+                addClick(e.offsetX, e.offsetY, true);
                 redraw();
         }
 }
