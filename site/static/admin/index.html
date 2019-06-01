@@ -22,6 +22,16 @@
     <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
     <script src="https://unpkg.com/react@15.6.1/dist/react-with-addons.js"></script>
     <script src="https://unpkg.com/react-json-schema-editor@1.1.1/EditorBemjson/EditorBemjson.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+<!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
+<script type="text/javascript" src="App.js"></script>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery_plantuml.js"></script>
+<script src="go-debug.js"></script>
+<script src="logic.js"></script>
+<script src="sequence.js"></script>
+<script src="class.js"></script>
+<script src="simulink.js"></script>
     <script>
 //initialisation variable
 
@@ -295,7 +305,7 @@ function postPictureEngineV2()
                     go.Diagram.fromDiv(diagramDiv).div = null;
                 }
 
-                ReactJson.initClass(response[1]);		// the loadFromJSON is made in initClass
+                initClass(response[1]);		// the loadFromJSON is made in initClass
                     //loadFromJSONClass(response[1]);
             }
                 //engineDiv.appendChild(paraph);
