@@ -632,6 +632,7 @@ function postPictureEngineV2()
 		var engineDiv = document.getElementById("engineDiv");
                 var paraph = document.createElement("p");
                 var response = xhr.responseText.split("%split%");
+		alert(xhr.responseText);
 		var responseTest = rawResponse.split("%split%");
                 paraph.innerHTML=responseTest[0];
                 var shouldILoop=0;
