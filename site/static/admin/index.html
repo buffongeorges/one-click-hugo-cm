@@ -562,11 +562,12 @@ function mouseUp()
 		//clear the single stroke canvas
 		var singleStroke = document.getElementById("singleStrokeLayer");
         	var singleCtx = singleStroke.getContext('2d');
-        	singleCtx.clearRect(0, 0, singleStroke.width, singleStroke.height);
+        	
 		clickX = [];
 		clickY = [];
 		clickDrag = [];
 		postPictureEngineV2();
+		singleCtx.clearRect(0, 0, singleStroke.width, singleStroke.height);
 	}
 }
 
